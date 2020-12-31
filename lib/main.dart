@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as dartConvert;
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hello app',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Hello app'),
     );
   }
 }
@@ -28,11 +28,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Future<JsonIpApi> futureIpApi;
 
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    futureIpApi = fetchJsonIpApiData();
   }
 
   @override
@@ -45,6 +52,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            FutureBuilder<JsonIpApi>(
+              future: futureIpApi,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(snapshot.data.strIp);
+                } else if (snapshot.hasError) {
+                  return SelectableText(
+                      "${snapshot.error}\nYou might need to disable AdBlock");
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
             Text(
               'You have pushed the button this many times:',
             ),
@@ -61,5 +81,26 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ),
     );
+  }
+}
+
+class JsonIpApi {
+  final String strIp;
+
+  JsonIpApi({this.strIp});
+
+  factory JsonIpApi.parseJson(Map<String, dynamic> json) {
+    return JsonIpApi(strIp: json['query']);
+  }
+}
+
+Future<JsonIpApi> fetchJsonIpApiData() async {
+  final response = await http.get('http://ip-api.com/json/');
+
+  if (response.statusCode == 200) {
+    var responseBody = dartConvert.jsonDecode(response.body);
+    return JsonIpApi.parseJson(responseBody);
+  } else {
+    throw Exception('Failed to get data from Ip-Api.');
   }
 }
