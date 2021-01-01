@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as dartConvert;
+import 'package:html_unescape/html_unescape.dart';
 
 void main() => runApp(MyApp());
 
@@ -62,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               future: futureSalutApi,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return SelectableText(snapshot.data.strHello);
+                  return SelectableText(snapshot.data.strUnescapedHello);
                 } else if (snapshot.hasError) {
                   return SelectableText(
                       "${snapshot.error}\nYou might need to disable AdBlock");
@@ -117,11 +118,15 @@ Future<JsonIpApi> fetchJsonIpApiData() async {
 
 class JsonSalutApi {
   final String strHello;
+  final String strUnescapedHello;
 
-  JsonSalutApi({this.strHello});
+  JsonSalutApi({this.strHello, this.strUnescapedHello});
 
   factory JsonSalutApi.parseJson(Map<String, dynamic> json) {
-    return JsonSalutApi(strHello: json['hello']);
+    var unescape = HtmlUnescape();
+    return JsonSalutApi(
+        strHello: json['hello'],
+        strUnescapedHello: unescape.convert(json['hello']));
   }
 }
 
