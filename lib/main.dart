@@ -104,3 +104,24 @@ Future<JsonIpApi> fetchJsonIpApiData() async {
     throw Exception('Failed to get data from Ip-Api.');
   }
 }
+
+class JsonSalutApi {
+  final String strHello;
+
+  JsonSalutApi({this.strHello});
+
+  factory JsonSalutApi.parseJson(Map<String, dynamic> json) {
+    return JsonSalutApi(strHello: json['hello']);
+  }
+}
+
+Future<JsonSalutApi> fetchJsonSalutApiData(userIp) async {
+  final response =
+      await http.get('https://fourtonfish.com/hellosalut/?ip=' + userIp);
+  if (response.statusCode == 200) {
+    var responseBody = dartConvert.jsonDecode(response.body);
+    return JsonSalutApi.parseJson(responseBody);
+  } else {
+    throw Exception('Failed to get data from Salut api.');
+  }
+}
