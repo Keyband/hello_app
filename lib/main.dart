@@ -29,6 +29,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Future<JsonIpApi> futureIpApi;
+  Future<JsonSalutApi> futureSalutApi;
 
   void _incrementCounter() {
     setState(() {
@@ -40,6 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     futureIpApi = fetchJsonIpApiData();
+    futureIpApi.then((ipApiData) {
+      setState(() {
+        futureSalutApi = fetchJsonSalutApiData(ipApiData.strIp);
+      });
+    });
   }
 
   @override
@@ -52,11 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FutureBuilder<JsonIpApi>(
-              future: futureIpApi,
+            FutureBuilder<JsonSalutApi>(
+              future: futureSalutApi,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Text(snapshot.data.strIp);
+                  return SelectableText(snapshot.data.strHello);
                 } else if (snapshot.hasError) {
                   return SelectableText(
                       "${snapshot.error}\nYou might need to disable AdBlock");
@@ -91,6 +97,10 @@ class JsonIpApi {
 
   factory JsonIpApi.parseJson(Map<String, dynamic> json) {
     return JsonIpApi(strIp: json['query']);
+  }
+
+  String get ip {
+    return strIp;
   }
 }
 
