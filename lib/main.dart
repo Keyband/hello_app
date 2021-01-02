@@ -33,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Future<JsonIpApi> futureIpApi;
   Future<JsonSalutApi> futureSalutApi;
+  String strHelloNative = '';
   String strLogin = '';
   String strPassword = '';
   bool bMissingInfo = false;
@@ -75,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 future: futureSalutApi,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    strHelloNative = snapshot.data.strUnescapedHello;
                     return Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
@@ -169,6 +171,16 @@ class _MyHomePageState extends State<MyHomePage> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           setState(() {
                             bMissingInfo = true;
+                          });
+                        } else {
+                          final snackBar = SnackBar(
+                              content: Text(strHelloNative +
+                                  ' ' +
+                                  strLogin +
+                                  ', you have successfully logged in!'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          setState(() {
+                            bMissingInfo = false;
                           });
                         }
                       },
