@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<JsonSalutApi> futureSalutApi;
   String strLogin = '';
   String strPassword = '';
+  bool bMissingInfo = false;
 
   void _incrementCounter() {
     setState(() {
@@ -136,7 +137,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.green[50],
+                          fillColor: (bMissingInfo && strLogin == '')
+                              ? Colors.red[50]
+                              : Colors.green[50],
                           border: OutlineInputBorder(),
                           labelText: 'Login',
                           contentPadding: EdgeInsets.all(8)),
@@ -150,7 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.green[50],
+                          fillColor: (bMissingInfo && strPassword == '')
+                              ? Colors.red[50]
+                              : Colors.green[50],
                           border: OutlineInputBorder(),
                           labelText: 'Password',
                           contentPadding: EdgeInsets.all(8)),
@@ -161,9 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (strLogin == '' || strPassword == '') {
                           final snackBar = SnackBar(
                               content: Text('Login or password missing!'));
-
-                          // Scaffold.of(context).showSnackBar(snackBar);
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          setState(() {
+                            bMissingInfo = true;
+                          });
                         }
                       },
                       child: Text('Sign in'),
