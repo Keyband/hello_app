@@ -33,6 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Future<JsonIpApi> futureIpApi;
   Future<JsonSalutApi> futureSalutApi;
+  String strLogin = '';
+  String strPassword = '';
 
   void _incrementCounter() {
     setState(() {
@@ -129,6 +131,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     TextField(
                       autocorrect: false,
+                      onChanged: (text) {
+                        strLogin = text;
+                      },
                       decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.green[50],
@@ -140,6 +145,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     TextField(
                       obscureText: true,
                       autocorrect: false,
+                      onChanged: (text) {
+                        strPassword = text;
+                      },
                       decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.green[50],
@@ -150,7 +158,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(height: 8),
                     RaisedButton(
                       onPressed: () {
-                        print('Joasdasfas');
+                        if (strLogin == '' || strPassword == '') {
+                          final snackBar = SnackBar(
+                              content: Text('Login or password missing!'));
+
+                          // Scaffold.of(context).showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       },
                       child: Text('Sign in'),
                       color: Colors.green[200],
