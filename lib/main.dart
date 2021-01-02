@@ -1,3 +1,5 @@
+// Bg image credit: https://cc0textures.com/view?id=PavingStones065
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as dartConvert;
@@ -63,7 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
               future: futureSalutApi,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return SelectableText(snapshot.data.strUnescapedHello);
+                  return SelectableText(snapshot.data.strUnescapedHello,
+                      style: Theme.of(context).textTheme.headline3);
                 } else if (snapshot.hasError) {
                   return SelectableText(
                       "${snapshot.error}\nYou might need to disable AdBlock");
@@ -72,20 +75,60 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
             ),
-            Text(
-              'You have pushed the button this many times:',
+            SizedBox(
+              height: 8,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      offset: Offset(4, 4),
+                      blurRadius: 16.0,
+                      spreadRadius: 8.0,
+                      color: Colors.black.withOpacity(0.2))
+                ],
+                color: Colors.green[300],
+              ),
+              padding: EdgeInsets.all(8),
+              margin: EdgeInsets.all(8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  TextField(
+                    autocorrect: false,
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.green[50],
+                        border: OutlineInputBorder(),
+                        labelText: 'Login',
+                        contentPadding: EdgeInsets.all(8)),
+                  ),
+                  SizedBox(height: 8),
+                  TextField(
+                    obscureText: true,
+                    autocorrect: false,
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.green[50],
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                        contentPadding: EdgeInsets.all(8)),
+                  ),
+                  SizedBox(height: 8),
+                  RaisedButton(
+                    onPressed: () {
+                      print('Joasdasfas');
+                    },
+                    child: Text('Sign in'),
+                    color: Colors.green[200],
+                  )
+                ],
+              ),
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
