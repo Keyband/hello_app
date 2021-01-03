@@ -198,6 +198,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class StrIpify {
+  final String strIp;
+  StrIpify({this.strIp});
+  factory StrIpify.parseResponse(String response) {
+    return StrIpify(strIp: response);
+  }
+}
+
+Future<String> fetchIpifyData() async {
+  final response = await http.get('https://api.ipify.org');
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    throw Exception('Failed to get data from Ipify.');
+  }
+}
+
 class JsonIpApi {
   final String strIp;
 
