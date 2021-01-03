@@ -31,6 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Future<StrIpify> futureIpify;
   Future<JsonIpApi> futureIpApi;
   Future<JsonSalutApi> futureSalutApi;
   String strHelloNative = '';
@@ -47,10 +48,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    futureIpApi = fetchJsonIpApiData();
-    futureIpApi.then((ipApiData) {
+    // futureIpApi = fetchJsonIpApiData();
+    // futureIpApi.then((ipApiData) {
+    //   setState(() {
+    //     futureSalutApi = fetchJsonSalutApiData(ipApiData.strIp);
+    //   });
+    // });
+    futureIpify = fetchIpifyData();
+    futureIpify.then((ipApifyData) {
       setState(() {
-        futureSalutApi = fetchJsonSalutApiData(ipApiData.strIp);
+        futureSalutApi = fetchJsonSalutApiData(ipApifyData.strIp);
       });
     });
   }
@@ -206,10 +213,10 @@ class StrIpify {
   }
 }
 
-Future<String> fetchIpifyData() async {
+Future<StrIpify> fetchIpifyData() async {
   final response = await http.get('https://api.ipify.org');
   if (response.statusCode == 200) {
-    return response.body;
+    return StrIpify.parseResponse(response.body);
   } else {
     throw Exception('Failed to get data from Ipify.');
   }
