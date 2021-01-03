@@ -37,27 +37,22 @@ class _MyHomePageState extends State<MyHomePage> {
   String strHelloNative = '';
   String strLogin = '';
   String strPassword = '';
+  String strUserIp = '';
   bool bMissingInfo = false;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  bool bLoggedIn = false;
+  Map<String, String> mUserInfo;
 
   @override
   void initState() {
     super.initState();
-    // futureIpApi = fetchJsonIpApiData();
-    // futureIpApi.then((ipApiData) {
-    //   setState(() {
-    //     futureSalutApi = fetchJsonSalutApiData(ipApiData.strIp);
-    //   });
-    // });
     futureIpify = fetchIpifyData();
     futureIpify.then((ipApifyData) {
       setState(() {
+        strUserIp = ipApifyData.strIp;
         futureSalutApi = fetchJsonSalutApiData(ipApifyData.strIp);
+        futureSalutApi.then((value) {
+          ;
+        });
       });
     });
   }
@@ -76,128 +71,176 @@ class _MyHomePageState extends State<MyHomePage> {
                     image: AssetImage('assets/bg.jpg'), fit: BoxFit.cover)),
           ),
           Container(color: Colors.white.withOpacity(0.3)),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FutureBuilder<JsonSalutApi>(
-                future: futureSalutApi,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    strHelloNative = snapshot.data.strUnescapedHello;
-                    return Container(
-                      padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              offset: Offset(4, 4),
-                              blurRadius: 16.0,
-                              spreadRadius: 8.0,
-                              color: Colors.black.withOpacity(0.2))
-                        ],
-                        color: Colors.green[400],
+          Container(
+            child: bLoggedIn
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                offset: Offset(4, 4),
+                                blurRadius: 16.0,
+                                spreadRadius: 8.0,
+                                color: Colors.black.withOpacity(0.2))
+                          ],
+                          color: Colors.green[400],
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            SelectableText(strHelloNative + '!'),
+                            SelectableText('Your IP is: ' + strUserIp),
+                          ],
+                        ),
                       ),
-                      child: Stack(
-                        children: [
-                          SelectableText(snapshot.data.strUnescapedHello,
-                              style: TextStyle(
-                                  color: Colors.green[600], fontSize: 38)),
-                          SelectableText(snapshot.data.strUnescapedHello,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 36,
-                              ))
-                        ],
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return SelectableText(
-                        "${snapshot.error}\nYou might need to disable AdBlock");
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        offset: Offset(4, 4),
-                        blurRadius: 16.0,
-                        spreadRadius: 8.0,
-                        color: Colors.black.withOpacity(0.2))
-                  ],
-                  color: Colors.green[300],
-                ),
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.all(8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    TextField(
-                      autocorrect: false,
-                      onChanged: (text) {
-                        strLogin = text;
-                      },
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: (bMissingInfo && strLogin == '')
-                              ? Colors.red[50]
-                              : Colors.green[50],
-                          border: OutlineInputBorder(),
-                          labelText: 'Login',
-                          contentPadding: EdgeInsets.all(8)),
-                    ),
-                    SizedBox(height: 8),
-                    TextField(
-                      obscureText: true,
-                      autocorrect: false,
-                      onChanged: (text) {
-                        strPassword = text;
-                      },
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: (bMissingInfo && strPassword == '')
-                              ? Colors.red[50]
-                              : Colors.green[50],
-                          border: OutlineInputBorder(),
-                          labelText: 'Password',
-                          contentPadding: EdgeInsets.all(8)),
-                    ),
-                    SizedBox(height: 8),
-                    RaisedButton(
-                      onPressed: () {
-                        if (strLogin == '' || strPassword == '') {
+                      RaisedButton(
+                        onPressed: () {
                           final snackBar = SnackBar(
-                              content: Text('Login or password missing!'));
+                              content:
+                                  Text('Have a great day, ' + strLogin + '!'));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           setState(() {
-                            bMissingInfo = true;
+                            bLoggedIn = false;
                           });
-                        } else {
-                          final snackBar = SnackBar(
-                              content: Text(strHelloNative +
-                                  ' ' +
-                                  strLogin +
-                                  ', you have successfully logged in!'));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          setState(() {
-                            bMissingInfo = false;
-                          });
-                        }
-                      },
-                      child: Text('Sign in'),
-                      color: Colors.green[200],
-                    )
-                  ],
-                ),
-              )
-            ],
+                        },
+                        child: Text('Sign out'),
+                        color: Colors.green[200],
+                      )
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FutureBuilder<JsonSalutApi>(
+                        future: futureSalutApi,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            strHelloNative = snapshot.data.strUnescapedHello;
+                            return Container(
+                              padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      offset: Offset(4, 4),
+                                      blurRadius: 16.0,
+                                      spreadRadius: 8.0,
+                                      color: Colors.black.withOpacity(0.2))
+                                ],
+                                color: Colors.green[400],
+                              ),
+                              child: Stack(
+                                children: [
+                                  SelectableText(
+                                      snapshot.data.strUnescapedHello,
+                                      style: TextStyle(
+                                          color: Colors.green[600],
+                                          fontSize: 38)),
+                                  SelectableText(
+                                      snapshot.data.strUnescapedHello,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 36,
+                                      ))
+                                ],
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return SelectableText(
+                                "${snapshot.error}\nYou might need to disable AdBlock");
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                offset: Offset(4, 4),
+                                blurRadius: 16.0,
+                                spreadRadius: 8.0,
+                                color: Colors.black.withOpacity(0.2))
+                          ],
+                          color: Colors.green[300],
+                        ),
+                        padding: EdgeInsets.all(8),
+                        margin: EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            TextField(
+                              autocorrect: false,
+                              onChanged: (text) {
+                                strLogin = text;
+                              },
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: (bMissingInfo && strLogin == '')
+                                      ? Colors.red[50]
+                                      : Colors.green[50],
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Login',
+                                  contentPadding: EdgeInsets.all(8)),
+                            ),
+                            SizedBox(height: 8),
+                            TextField(
+                              obscureText: true,
+                              autocorrect: false,
+                              onChanged: (text) {
+                                strPassword = text;
+                              },
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: (bMissingInfo && strPassword == '')
+                                      ? Colors.red[50]
+                                      : Colors.green[50],
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Password',
+                                  contentPadding: EdgeInsets.all(8)),
+                            ),
+                            SizedBox(height: 8),
+                            RaisedButton(
+                              onPressed: () {
+                                if (strLogin == '' || strPassword == '') {
+                                  final snackBar = SnackBar(
+                                      content:
+                                          Text('Login or password missing!'));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                  setState(() {
+                                    bMissingInfo = true;
+                                  });
+                                } else {
+                                  final snackBar = SnackBar(
+                                      content: Text(strHelloNative +
+                                          ' ' +
+                                          strLogin +
+                                          ', you have successfully logged in!'));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                  setState(() {
+                                    bMissingInfo = false;
+                                    bLoggedIn = true;
+                                  });
+                                }
+                              },
+                              child: Text('Sign in'),
+                              color: Colors.green[200],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
           ),
         ]),
       ),
@@ -257,7 +300,9 @@ class JsonSalutApi {
     var unescape = HtmlUnescape();
     return JsonSalutApi(
         strHello: json['hello'],
-        strUnescapedHello: unescape.convert(json['hello']));
+        strUnescapedHello: unescape.convert(
+          json['hello'],
+        ));
   }
 }
 
