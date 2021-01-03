@@ -77,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
                           boxShadow: <BoxShadow>[
@@ -87,15 +86,32 @@ class _MyHomePageState extends State<MyHomePage> {
                                 spreadRadius: 8.0,
                                 color: Colors.black.withOpacity(0.2))
                           ],
-                          color: Colors.green[400],
+                          color: Colors.green[300],
                         ),
+                        padding: EdgeInsets.all(8),
+                        margin: EdgeInsets.all(8),
                         child: Column(
                           children: <Widget>[
-                            SelectableText(strHelloNative + '!'),
-                            SelectableText('Your IP is: ' + strUserIp),
+                            SelectableText(strHelloNative + '!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 36,
+                                )),
+                            Divider(
+                              color: Colors.white,
+                              height: 2,
+                            ),
+                            SelectableText('Your IP is: ' + strUserIp,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 36,
+                                )),
                           ],
                         ),
                       ),
+                      SizedBox(height: 8),
                       RaisedButton(
                         onPressed: () {
                           final snackBar = SnackBar(
