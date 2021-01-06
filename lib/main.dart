@@ -1,5 +1,5 @@
 // Bg image credit: https://cc0textures.com/view?id=PavingStones065
-
+// Logo image credit: https://www.flaticon.com/free-icon/planet-earth_921490?term=globe&page=1&position=23&related_item_id=921490
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as dartConvert;
