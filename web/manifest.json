@@ -3,9 +3,9 @@
  "short_name": "Hello app",
  "start_url": ".",
  "display": "standalone",
- "background_color": "#e8f5e9",
- "theme_color": "#4caf50",
- "description": "A new Flutter project.",
+ "background_color": "#E8F5E9",
+ "theme_color": "#4CAF50",
+ "description": "Small flutter project for checking IP and user location.",
  "orientation": "portrait-primary",
  "prefer_related_applications": false,
  "icons": [
@@ -49,6 +49,12 @@
 	"src": "icons/logo.png",
 	"sizes": "512x512",
 	"type": "image/png"
+	},
+  {
+	"src": "icons/maskable_icon.png",
+	"sizes": "640x640",
+	"type": "image/png",
+	"purpose": "any maskable"
 	}
  ]
 }
