@@ -1,6 +1,6 @@
 {
  "name": "Hello app",
- "short_name": "hello_app",
+ "short_name": "Hello app",
  "start_url": ".",
  "display": "standalone",
  "background_color": "#e8f5e9",
