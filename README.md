@@ -1,16 +1,7 @@
-# hello_app
+# Hello app
 
-A new Flutter project.
+Project based on this idea: https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Hello-App.md
+While working on it I learned how to switch widgets, use different APIs, and basic user interaction (with the login and password fields, that accept dummy entries).
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Projeto baseado na ideia disponível aqui: https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Hello-App.md
+Nele pude aprender melhor como fazer trocas de widgets, uso de diferentes APIs, e interação básica com o usuário (com campos para o usuário colocar login e senhas fictícios).
