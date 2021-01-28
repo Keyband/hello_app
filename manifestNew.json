@@ -1,0 +1,10 @@
+{
+  "name": "Hello App Demo",
+  "short_name": "Hello App",
+  "theme_color": "#4caf50",
+  "background_color": "#e8f5e9",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}
