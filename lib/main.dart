@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as dartConvert;
 import 'package:html_unescape/html_unescape.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(MyApp());
 
@@ -61,7 +62,38 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(widget.title),
+            IconButton(
+              icon: Icon(Icons.help),
+              onPressed: () {
+                showAboutDialog(
+                    context: context,
+                    applicationVersion: "1.0",
+                    applicationName: "Pomodoro Timer",
+                    // applicationLegalese:
+                    // "Made by Guilherme R. Ribeiro.",
+                    children: <Widget>[
+                      Text("Made by Guilherme R. Ribeiro.\n\n"),
+                      Text("Credits (tap to open):\n"),
+                      InkWell(
+                        child: Text('-Background image, from CC0textures;\n'),
+                        onTap: () => launch(
+                            'https://cc0textures.com/view?id=PavingStones065'),
+                      ),
+                      InkWell(
+                        child: Text(
+                            '-Application icon, by Freepik at Flaticon.\n'),
+                        onTap: () => launch(
+                            'https://www.flaticon.com/free-icon/planet-earth_921490?term=globe&page=1&position=23&related_item_id=921490'),
+                      ),
+                    ]);
+              },
+            )
+          ],
+        ),
       ),
       body: Center(
         child: Stack(fit: StackFit.expand, children: [
