@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 showAboutDialog(
                     context: context,
                     applicationVersion: "1.0",
-                    applicationName: "Pomodoro Timer",
+                    applicationName: "Hello app",
                     // applicationLegalese:
                     // "Made by Guilherme R. Ribeiro.",
                     children: <Widget>[
